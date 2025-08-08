@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste - Sistema de Rastreamento Memory Pulse</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .button {
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .button:hover {
+            background: #0056b3;
+        }
+        .button.success {
+            background: #28a745;
+        }
+        .button.warning {
+            background: #ffc107;
+            color: black;
+        }
+        .button.danger {
+            background: #dc3545;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .code {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .metric {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .metric h3 {
+            margin: 0 0 10px 0;
+            color: #007bff;
+        }
+        .metric .value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 Sistema de Rastreamento Memory Pulse - Teste</h1>
+        <p>Esta página permite testar todos os recursos do sistema de rastreamento Facebook Ads.</p>
+    </div>
+
+    <!-- Status do Sistema -->
+    <div class="container">
+        <h2>📊 Status do Sistema</h2>
+        <div id="systemStatus" class="status info">
+            Verificando status do sistema...
+        </div>
+        <div class="grid">
+            <div class="metric">
+                <h3>Facebook Pixel</h3>
+                <div id="pixelStatus" class="value">Verificando...</div>
+            </div>
+            <div class="metric">
+                <h3>Analytics</h3>
+                <div id="analyticsStatus" class="value">Verificando...</div>
+            </div>
+            <div class="metric">
+                <h3>UTM Tracking</h3>
+                <div id="utmStatus" class="value">Verificando...</div>
+            </div>
+            <div class="metric">
+                <h3>A/B Testing</h3>
+                <div id="abTestStatus" class="value">Verificando...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Teste de Eventos -->
+    <div class="container">
+        <h2>🎯 Teste de Eventos</h2>
+        <div class="section">
+            <h3>Eventos Facebook Pixel</h3>
+            <button class="button" onclick="testEvent('PageView')">PageView</button>
+            <button class="button" onclick="testEvent('ViewContent')">ViewContent</button>
+            <button class="button" onclick="testEvent('InitiateCheckout')">InitiateCheckout</button>
+            <button class="button" onclick="testEvent('AddToCart')">AddToCart</button>
+            <button class="button" onclick="testEvent('Purchase')">Purchase</button>
+            <button class="button" onclick="testEvent('Lead')">Lead</button>
+            <button class="button" onclick="testEvent('Engagement')">Engagement</button>
+        </div>
+
+        <div class="section">
+            <h3>Eventos Customizados</h3>
+            <button class="button" onclick="testEvent('VideoPlay')">VideoPlay</button>
+            <button class="button" onclick="testEvent('VideoComplete')">VideoComplete</button>
+            <button class="button" onclick="testEvent('Scroll50')">Scroll50</button>
+            <button class="button" onclick="testEvent('TimeOnPage')">TimeOnPage</button>
+            <button class="button" onclick="testEvent('ButtonClick')">ButtonClick</button>
+        </div>
+
+        <div class="section">
+            <h3>Simulação de Conversão</h3>
+            <button class="button success" onclick="simulatePurchase()">Simular Compra</button>
+            <button class="button warning" onclick="simulateCheckout()">Simular Checkout</button>
+            <button class="button" onclick="simulateLead()">Simular Lead</button>
+        </div>
+    </div>
+
+    <!-- Teste de UTM -->
+    <div class="container">
+        <h2>🔗 Teste de UTM</h2>
+        <div class="section">
+            <h3>URLs de Teste</h3>
+            <p>Clique nos links abaixo para testar diferentes cenários de UTM:</p>
+            <button class="button" onclick="testUTM('facebook', 'awareness')">Facebook - Awareness</button>
+            <button class="button" onclick="testUTM('instagram', 'stories')">Instagram - Stories</button>
+            <button class="button" onclick="testUTM('google', 'search')">Google - Search</button>
+            <button class="button" onclick="testUTM('email', 'newsletter')">Email - Newsletter</button>
+        </div>
+
+        <div class="section">
+            <h3>Parâmetros UTM Atuais</h3>
+            <div id="currentUTM" class="code">
+                Carregando parâmetros UTM...
+            </div>
+        </div>
+    </div>
+
+    <!-- Relatórios -->
+    <div class="container">
+        <h2>📈 Relatórios</h2>
+        <div class="section">
+            <h3>Relatório de Conversão</h3>
+            <button class="button" onclick="showConversionReport()">Mostrar Relatório</button>
+            <div id="conversionReport" class="code" style="display: none;"></div>
+        </div>
+
+        <div class="section">
+            <h3>Relatório UTM</h3>
+            <button class="button" onclick="showUTMReport()">Mostrar Relatório</button>
+            <div id="utmReport" class="code" style="display: none;"></div>
+        </div>
+
+        <div class="section">
+            <h3>Exportar Dados</h3>
+            <button class="button" onclick="exportAnalytics()">Exportar Analytics</button>
+            <button class="button" onclick="exportUTM()">Exportar UTM</button>
+        </div>
+    </div>
+
+    <!-- Configuração -->
+    <div class="container">
+        <h2>⚙️ Configuração</h2>
+        <div class="section">
+            <h3>Debug Mode</h3>
+            <button class="button" onclick="toggleDebug()">Ativar/Desativar Debug</button>
+            <button class="button" onclick="clearData()">Limpar Dados</button>
+            <button class="button" onclick="validateConfig()">Validar Configuração</button>
+        </div>
+
+        <div class="section">
+            <h3>Configuração Atual</h3>
+            <div id="currentConfig" class="code">
+                Carregando configuração...
+            </div>
+        </div>
+    </div>
+
+    <!-- Logs -->
+    <div class="container">
+        <h2>📝 Logs</h2>
+        <div class="section">
+            <h3>Logs do Sistema</h3>
+            <button class="button" onclick="clearLogs()">Limpar Logs</button>
+            <div id="systemLogs" class="code" style="max-height: 300px; overflow-y: auto;">
+                Aguardando logs...
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Aguarda carregamento dos sistemas
+        window.addEventListener('load', function() {
+            setTimeout(checkSystemStatus, 1000);
+            updateCurrentUTM();
+            updateCurrentConfig();
+        });
+
+        // Verifica status do sistema
+        function checkSystemStatus() {
+            const status = document.getElementById('systemStatus');
+            const pixelStatus = document.getElementById('pixelStatus');
+            const analyticsStatus = document.getElementById('analyticsStatus');
+            const utmStatus = document.getElementById('utmStatus');
+            const abTestStatus = document.getElementById('abTestStatus');
+
+            // Verifica Facebook Tracking
+            if (window.facebookTracking) {
+                pixelStatus.textContent = '✅ Ativo';
+                pixelStatus.style.color = '#28a745';
+            } else {
+                pixelStatus.textContent = '❌ Inativo';
+                pixelStatus.style.color = '#dc3545';
+            }
+
+            // Verifica Analytics
+            if (window.analytics) {
+                analyticsStatus.textContent = '✅ Ativo';
+                analyticsStatus.style.color = '#28a745';
+            } else {
+                analyticsStatus.textContent = '❌ Inativo';
+                analyticsStatus.style.color = '#dc3545';
+            }
+
+            // Verifica UTM Tracking
+            if (window.utmTracking) {
+                utmStatus.textContent = '✅ Ativo';
+                utmStatus.style.color = '#28a745';
+            } else {
+                utmStatus.textContent = '❌ Inativo';
+                utmStatus.style.color = '#dc3545';
+            }
+
+            // Verifica A/B Testing
+            if (window.analytics && window.analytics.abTestData) {
+                abTestStatus.textContent = '✅ Ativo';
+                abTestStatus.style.color = '#28a745';
+            } else {
+                abTestStatus.textContent = '❌ Inativo';
+                abTestStatus.style.color = '#dc3545';
+            }
+
+            // Status geral
+            if (window.facebookTracking && window.analytics && window.utmTracking) {
+                status.className = 'status success';
+                status.textContent = '✅ Todos os sistemas estão funcionando corretamente!';
+            } else {
+                status.className = 'status error';
+                status.textContent = '❌ Alguns sistemas não estão funcionando. Verifique o console para mais detalhes.';
+            }
+        }
+
+        // Testa evento
+        function testEvent(eventName) {
+            if (window.facebookTracking) {
+                window.facebookTracking.trackEvent(eventName, {
+                    test: true,
+                    timestamp: new Date().toISOString()
+                });
+                addLog(`Evento testado: ${eventName}`);
+            } else {
+                addLog(`Erro: Facebook Tracking não disponível`);
+            }
+        }
+
+        // Simula compra
+        function simulatePurchase() {
+            if (window.facebookTracking) {
+                window.facebookTracking.trackPurchase('test_order_' + Date.now(), 39.00, 'USD');
+                addLog('Compra simulada com sucesso');
+            }
+        }
+
+        // Simula checkout
+        function simulateCheckout() {
+            if (window.facebookTracking) {
+                window.facebookTracking.trackInitiateCheckout();
+                addLog('Checkout simulado com sucesso');
+            }
+        }
+
+        // Simula lead
+        function simulateLead() {
+            if (window.facebookTracking) {
+                window.facebookTracking.trackLead();
+                addLog('Lead simulado com sucesso');
+            }
+        }
+
+        // Testa UTM
+        function testUTM(source, campaign) {
+            const baseUrl = window.location.origin + window.location.pathname;
+            const testUrls = {
+                facebook: {
+                    awareness: '?utm_source=facebook&utm_medium=cpc&utm_campaign=memory_pulse_awareness&utm_content=video_ad&utm_term=memoria'
+                },
+                instagram: {
+                    stories: '?utm_source=instagram&utm_medium=cpc&utm_campaign=memory_pulse_stories&utm_content=story_ad&utm_term=memoria'
+                },
+                google: {
+                    search: '?utm_source=google&utm_medium=cpc&utm_campaign=memory_pulse_search&utm_content=search_ad&utm_term=ondas+cerebrais'
+                },
+                email: {
+                    newsletter: '?utm_source=email&utm_medium=email&utm_campaign=memory_pulse_newsletter&utm_content=newsletter&utm_term=memoria'
+                }
+            };
+
+            const url = baseUrl + testUrls[source][campaign];
+            window.open(url, '_blank');
+            addLog(`UTM testado: ${source} - ${campaign}`);
+        }
+
+        // Atualiza UTM atual
+        function updateCurrentUTM() {
+            const utmDiv = document.getElementById('currentUTM');
+            if (window.utmTracking) {
+                const utmParams = window.utmTracking.getUTMParameters();
+                utmDiv.textContent = JSON.stringify(utmParams, null, 2);
+            } else {
+                utmDiv.textContent = 'UTM Tracking não disponível';
+            }
+        }
+
+        // Atualiza configuração atual
+        function updateCurrentConfig() {
+            const configDiv = document.getElementById('currentConfig');
+            if (window.TRACKING_CONFIG) {
+                configDiv.textContent = JSON.stringify(window.TRACKING_CONFIG, null, 2);
+            } else {
+                configDiv.textContent = 'Configuração não disponível';
+            }
+        }
+
+        // Mostra relatório de conversão
+        function showConversionReport() {
+            const reportDiv = document.getElementById('conversionReport');
+            if (window.analytics) {
+                const report = window.analytics.getConversionReport();
+                reportDiv.textContent = JSON.stringify(report, null, 2);
+                reportDiv.style.display = 'block';
+                addLog('Relatório de conversão gerado');
+            } else {
+                reportDiv.textContent = 'Analytics não disponível';
+                reportDiv.style.display = 'block';
+            }
+        }
+
+        // Mostra relatório UTM
+        function showUTMReport() {
+            const reportDiv = document.getElementById('utmReport');
+            if (window.utmTracking) {
+                const report = window.utmTracking.getUTMReport();
+                reportDiv.textContent = JSON.stringify(report, null, 2);
+                reportDiv.style.display = 'block';
+                addLog('Relatório UTM gerado');
+            } else {
+                reportDiv.textContent = 'UTM Tracking não disponível';
+                reportDiv.style.display = 'block';
+            }
+        }
+
+        // Exporta analytics
+        function exportAnalytics() {
+            if (window.analytics) {
+                window.analytics.exportToCSV();
+                addLog('Dados de analytics exportados');
+            }
+        }
+
+        // Exporta UTM
+        function exportUTM() {
+            if (window.utmTracking) {
+                window.utmTracking.exportUTMToCSV();
+                addLog('Dados UTM exportados');
+            }
+        }
+
+        // Ativa/desativa debug
+        function toggleDebug() {
+            const currentDebug = localStorage.getItem('debug_mode') === 'true';
+            localStorage.setItem('debug_mode', !currentDebug);
+            addLog(`Debug mode ${!currentDebug ? 'ativado' : 'desativado'}`);
+            location.reload();
+        }
+
+        // Limpa dados
+        function clearData() {
+            localStorage.removeItem('analytics_data');
+            localStorage.removeItem('analytics_sessions');
+            localStorage.removeItem('utm_campaigns');
+            localStorage.removeItem('utm_events');
+            addLog('Todos os dados foram limpos');
+        }
+
+        // Valida configuração
+        function validateConfig() {
+            if (window.ConfigUtils) {
+                const validation = window.ConfigUtils.validate();
+                if (validation.isValid) {
+                    addLog('✅ Configuração válida');
+                } else {
+                    addLog('❌ Configuração inválida: ' + validation.errors.join(', '));
+                }
+            }
+        }
+
+        // Limpa logs
+        function clearLogs() {
+            document.getElementById('systemLogs').textContent = 'Logs limpos...';
+        }
+
+        // Adiciona log
+        function addLog(message) {
+            const logsDiv = document.getElementById('systemLogs');
+            const timestamp = new Date().toLocaleTimeString();
+            logsDiv.textContent += `[${timestamp}] ${message}\n`;
+            logsDiv.scrollTop = logsDiv.scrollHeight;
+        }
+
+        // Intercepta logs do console
+        const originalLog = console.log;
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            if (args[0] && typeof args[0] === 'string' && args[0].includes('Memory Pulse')) {
+                addLog(args.join(' '));
+            }
+        };
+    </script>
+</body>
+</html> 
